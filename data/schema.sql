@@ -1,9 +1,7 @@
-
 CREATE TABLE Players (
     PlayerID   INTEGER PRIMARY KEY AUTOINCREMENT,
     PlayerName VARCHAR(100) NOT NULL UNIQUE,
-    Ranking    INTEGER
-);
+    Ranking    INTEGER);
 
 
 
@@ -12,8 +10,7 @@ CREATE TABLE Tournaments (
     TournamentName VARCHAR(150) NOT NULL,
     Series         VARCHAR(50)  NOT NULL,
     Surface        VARCHAR(20)  NOT NULL,
-    Court          VARCHAR(20)  NOT NULL
-);
+    Court          VARCHAR(20)  NOT NULL);
 
 
 
@@ -28,8 +25,7 @@ CREATE TABLE Matches (
     Round        VARCHAR(20) NOT NULL,
     FOREIGN KEY (TournamentID) REFERENCES Tournaments(TournamentID),
     FOREIGN KEY (WinnerID)     REFERENCES Players(PlayerID),
-    FOREIGN KEY (LoserID)      REFERENCES Players(PlayerID)
-);
+    FOREIGN KEY (LoserID)      REFERENCES Players(PlayerID));
 
 
 
