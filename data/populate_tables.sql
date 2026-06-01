@@ -1,13 +1,10 @@
--- CourtStats: Populate normalized tables from raw `data` table
--- Run this in DataGrip against data.db
-
 -- Clear existing data (safe to re-run)
 DELETE FROM Matches;
 DELETE FROM Tournaments;
 DELETE FROM Players;
 DELETE FROM sqlite_sequence WHERE name IN ('Matches','Tournaments','Players');
 
--- 1. Populate Players (all unique player names from both columns)
+--Populate Players 
 INSERT INTO Players (PlayerName)
 SELECT p FROM (
     SELECT Player_1 AS p FROM data
@@ -16,13 +13,13 @@ SELECT p FROM (
 )
 ORDER BY p;
 
--- 2. Populate Tournaments (unique by name+series+surface+court)
+--Populate Tournaments
 INSERT INTO Tournaments (TournamentName, Series, Surface, Court)
 SELECT DISTINCT Tournament, Series, Surface, Court
 FROM data
 ORDER BY Tournament;
 
--- 3. Populate Matches (link to Players and Tournaments via FK)
+--Populate Matches
 INSERT INTO Matches (TournamentID, Date, WinnerID, LoserID, WinnerRank, LoserRank, Round)
 SELECT
     t.TournamentID,
@@ -44,7 +41,7 @@ JOIN Players l ON l.PlayerName = CASE
     ELSE d.Player_1
 END;
 
--- Verify counts
+--Verify counts
 SELECT 'Players'     AS tbl, COUNT(*) AS rows FROM Players
 UNION ALL
 SELECT 'Tournaments', COUNT(*) FROM Tournaments
